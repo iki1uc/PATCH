@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>PIPELINE1 · Quelle · Zahl · Vektor · REAL</title>
+
+<style>
+body{background:#000;color:#0f0;font-family:Consolas, monospace;padding:20px;}
+h1{color:#6cf;}
+pre{background:#111;padding:12px;border:1px solid #333;border-radius:6px;color:#0f0;}
+button{background:#111;color:#0f0;border:1px solid #0f0;padding:10px 20px;margin:5px;}
+</style>
+
+<script type="module">
+
+// MODULE IMPORTS
+import { QI } from "./QI.js";
+import { coreScan } from "./coreScan.js";
+
+import { P4 } from "./pipelineP4.js";
+import { P0 } from "./pipelineP0.js";
+import { P1 } from "./pipelineP1.js";
+import { P2 } from "./pipelineP2.js";
+import { Pe } from "./pipelinePe.js";
+
+// --- GLOBAL OUTPUT (MXU-OS Style) ---
+window.out = function(msg){
+    document.getElementById("out").innerText = msg;
+};
+
+// =========================
+// QI — GLOBAL FUNCTIONS
+// =========================
+
+window.qi_p1 = function(){
+    const core = coreScan();
+    out("QI · PIPELINE1\n" + JSON.stringify(QI.scan(P4.run(core)), null, 2));
+};
+
+window.qi_master = function(){
+    out("QI · MASTER-KERN\n" + JSON.stringify(QI.scan(coreScan()), null, 2));
+};
+
+window.qi_respo = function(){
+    const core = coreScan();
+    out("QI · RESPO\n" + JSON.stringify(QI.scan(core.respo360), null, 2));
+};
+
+// =========================
+// PIPELINE1 — GLOBAL FUNCTIONS
+// =========================
+
+window.p1_start = function(){
+    out("PIPELINE1 · START\n" + JSON.stringify(P4.run(coreScan()), null, 2));
+};
+
+window.p1_wake = function(){
+    out("PIPELINE1 · WAKE\n" + JSON.stringify(P0.run(coreScan()), null, 2));
+};
+
+window.p1_melt = function(){
+    out("PIPELINE1 · MELT\n" + JSON.stringify(P1.run(coreScan()), null, 2));
+};
+
+window.p1_merge = function(){
+    out("PIPELINE1 · MERGE\n" + JSON.stringify(P2.run(coreScan()), null, 2));
+};
+
+window.p1_finalize = function(){
+    out("PIPELINE1 · FINALIZE\n" + JSON.stringify(Pe.run(coreScan()), null, 2));
+};
+
+</script>
+
+</head>
+
+<body>
+
+<h1>PIPELINE1 · Quelle · Zahl · Vektor</h1>
+
+<section>
+<h2>QI / IQQ</h2>
+<button onclick="qi_p1()">QI · PIPELINE1</button>
+<button onclick="qi_master()">QI · MASTER-KERN</button>
+<button onclick="qi_respo()">QI · RESPO</button>
+<pre id="out">Bereit…</pre>
+</section>
+
+<section>
+<h2>PIPELINE1 · Schalter</h2>
+<button onclick="p1_start()">P1 · start</button>
+<button onclick="p1_wake()">P1 · wake</button>
+<button onclick="p1_melt()">P1 · melt</button>
+<button onclick="p1_merge()">P1 · merge</button>
+<button onclick="p1_finalize()">P1 · finalize</button>
+</section>
+
+</body>
+</html>
