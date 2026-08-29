@@ -98,3 +98,10 @@ export const API = {
 // ============================================================
 
 console.log("iki1uc API bereit · api.index.js geladen");
+import DirectV from "./DirectV.js";
+
+export const API = {
+    ...
+    directV: new DirectV(),
+    ...
+};
