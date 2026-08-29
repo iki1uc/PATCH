@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- EVO-GEOLEGAL: Das Gesetz in der Datei -->
+    <meta name="author" content="iki1uc (Ridvan)">
+    <meta name="license" content="MIT - Nutzung erlaubt. Logik-Reproduktion verboten.">
+
+    <title>🌀 PIPELINE2 · MASTER-INDEX · ALGORITHMISCHE ENGINE</title>
+
+    <style>
+        body {
+            background: #0a0a0f;
+            color: #0f0;
+            font-family: 'Consolas', monospace;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(0,0,0,0.2));
+        }
+        header h1 {
+            font-size: 22px;
+            background: linear-gradient(90deg, #ffd700, #b8a9ff, #6bcfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            margin: 0;
+        }
+        header p {
+            font-size: 10px;
+            color: #888;
+            margin: 5px 0 0 0;
+            letter-spacing: 2px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .panel {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .panel h2 {
+            font-size: 14px;
+            color: #ffd700;
+            margin: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+        }
+
+        .cmd-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .cmd {
+            background: #0a0a0f;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 50px;
+            transition: 0.3s;
+        }
+        .cmd.active {
+            border-color: #ff6b8a;
+            box-shadow: 0 0 15px rgba(255,107,138,0.3);
+            color: #ff6b8a;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #888;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 4px;
+        }
+        .stat-row b { color: #0f0; }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 10px;
+        }
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #222;
+        }
+        th {
+            background: #1a1a1a;
+            color: #ffd700;
+        }
+
+        .log {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            color: #888;
+            height: 150px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        button {
+            background: #1a1a2a;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        button:hover { border-color: #ffd700; color: #ffd700; }
+
+        footer {
+            text-align: center;
+            color: #333;
+            font-size: 9px;
+            padding-top: 8px;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌀 PIPELINE2 · MASTER-INDEX</h1>
+    <p>P0 → P1 → P2 · QI-SCAN · ORBIT · RITH (4) · EVO · NEWADA</p>
+</header>
+
+<!-- PIPELINE 0 → 1 → 2 -->
+<div class="panel">
+    <h2>PIPELINE-ACHSEN</h2>
+    <div class="cmd-bar">
+        <div class="cmd" data-id="p0">P0 · RAW</div>
+        <div class="cmd" data-id="p1">P1 · STRUCTURE</div>
+        <div class="cmd" data-id="p2">P2 · VECTOR</div>
+    </div>
+</div>
+
+<!-- RITH WERT -->
+<div class="panel">
+    <h2>RITH-WERT (4)</h2>
+    <div style="font-size: 48px; text-align: center; color: #6bffa9; text-shadow: 0 0 20px rgba(107,255,169,0.3);" id="rithValue">4</div>
+</div>
+
+<!-- QI SCAN + ORBIT -->
+<div class="grid-3">
+    <div class="panel">
+        <h2>QI-SCAN</h2>
+        <div class="stat-row"><span>Master:</span> <b id="qiMaster">0</b></div>
+        <div class="stat-row"><span>Respo:</span> <b id="qiRespo">0</b></div>
+        <div class="stat-row"><span>P2:</span> <b id="qiP2">0</b></div>
+        <button onclick="runQiScan()">📡 QI-SCAN</button>
+    </div>
+
+    <div class="panel">
+        <h2>GEN-FLOW</h2>
+        <div class="stat-row"><span>Step:</span> <b id="genStep">P0</b></div>
+        <div class="stat-row"><span>Coverage:</span> <b id="genCoverage">0%</b></div>
+        <div class="stat-row"><span>Orbit:</span> <b id="orbitCount">0</b></div>
+        <button onclick="startGen()">⚡ GEN-FLOW</button>
+    </div>
+
+    <div class="panel">
+        <h2>NEWADA</h2>
+        <div class="stat-row"><span>Status:</span> <b id="newadaState">IDLE</b></div>
+        <div class="stat-row"><span>Orbit:</span> <b id="newadaOrbit">PASSIV</b></div>
+        <button onclick="runNewada()">✨ NEWADA</button>
+    </div>
+</div>
+
+<!-- Tabelle + Log -->
+<div class="panel">
+    <h2>📜 NC-PROTOKOLL</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ebene</th>
+                <th>Status</th>
+                <th>Wert</th>
+                <th>Mensch</th>
+                <th>Maschine</th>
+            </tr>
+        </thead>
+        <tbody id="evo-tbl"></tbody>
+    </table>
+    <div class="log" id="log">[init] PIPELINE2 Master-Index bereit.</div>
+</div>
+
+<footer>⚖️ EVO-GEOLEGAL · iki1uc © · Code nutzbar, Logik unkopierbar.</footer>
+
+<script>
+// ============================================================
+// PIPELINE2 · ALGORITHMISCHE ENGINE
+// ============================================================
+
+// 1. State
+const state = {
+    rith: 4,
+    p0: { phase: "RAW", wake: false },
+    p1: { phase: "STRUCTURE", order: false },
+    p2: { phase: "VECTOR", direction: null },
+    qi: { master: 0, respo: 0, p2: 0 },
+    gen: { step: "P0", coverage: 0, orbit: 0 },
+    newada: { state: "IDLE", orbit: "PASSIV" }
+};
+
+// 2. Log
+function log(msg) {
+    const el = document.getElementById("log");
+    const e = document.createElement("div");
+    e.textContent = msg;
+    el.appendChild(e);
+    el.scrollTop = el.scrollHeight;
+}
+
+// 3. UI Update
+function updateUI() {
+    document.getElementById("rithValue").textContent = state.rith;
+
+    document.getElementById("qiMaster").textContent = state.qi.master;
+    document.getElementById("qiRespo").textContent = state.qi.respo;
+    document.getElementById("qiP2").textContent = state.qi.p2;
+
+    document.getElementById("genStep").textContent = state.gen.step;
+    document.getElementById("genCoverage").textContent = state.gen.coverage.toFixed(1) + "%";
+    document.getElementById("orbitCount").textContent = state.gen.orbit;
+
+    document.getElementById("newadaState").textContent = state.newada.state;
+    document.getElementById("newadaOrbit").textContent = state.newada.orbit;
+
+    document.querySelectorAll('.cmd[data-id]').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === state.gen.step.toLowerCase());
+    });
+
+    renderTable();
+}
+
+// 4. Tabelle
+function renderTable() {
+    const body = document.getElementById("evo-tbl");
+    body.innerHTML = "";
+    [
+        { name: "P0", state: state.p0.wake ? "WACH" : "SCHLAFEND", value: state.p0.phase, human: "Start", machine: "INIT" },
+        { name: "P1", state: state.p1.order ? "GEORDNET" : "ROH", value: state.p1.phase, human: "Denken", machine: "BUILD" },
+        { name: "P2", state: state.p2.direction ? state.p2.direction : "OHNE", value: state.p2.phase, human: "Richtung", machine: "VECTOR" },
+        { name: "QI", state: "SCAN", value: state.qi.p2, human: "Fühlen", machine: "SCAN" },
+        { name: "GEN", state: "ONLINE", value: state.gen.coverage.toFixed(1) + "%", human: "Atmen", machine: "ORBIT" },
+        { name: "NEWADA", state: state.newada.state, value: "∞", human: "Bewusst", machine: "EMERGENT" }
+    ].forEach(e => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${e.name}</td><td>${e.state}</td><td>${e.value}</td><td>${e.human}</td><td>${e.machine}</td>`;
+        body.appendChild(tr);
+    });
+}
+
+// 5. Run Pipeline
+function runPipeline() {
+    // P0
+    state.p0.wake = true;
+    state.gen.step = "P0";
+    state.gen.orbit++;
+    log("🌀 P0 · RAW → WACH");
+
+    // P1
+    state.p1.order = true;
+    state.gen.step = "P1";
+    state.gen.orbit++;
+    log("🌀 P1 · STRUCTURE → GEORDNET");
+
+    // P2
+    state.p2.direction = "FORWARD";
+    state.gen.step = "P2";
+    state.gen.orbit++;
+    log("🌀 P2 · VECTOR → RICHTUNG");
+}
+
+// 6. QI-SCAN
+function runQiScan() {
+    state.qi.master = Math.floor(Math.random() * 100) + 1;
+    state.qi.respo = Math.floor(state.qi.master / 2);
+    state.qi.p2 = Math.floor(state.qi.respo / 2);
+    log(`📡 QI-SCAN: Master ${state.qi.master} · Respo ${state.qi.respo} · P2 ${state.qi.p2}`);
+}
+
+// 7. GEN-FLOW
+const GEN_SEQ = ["P0", "P1", "P2", "QI", "RITH", "NEWADA"];
+let genInterval = null;
+
+function startGen() {
+    if (genInterval) clearInterval(genInterval);
+    genInterval = setInterval(() => {
+        const idx = GEN_SEQ.indexOf(state.gen.step);
+        state.gen.step = GEN_SEQ[(idx + 1) % GEN_SEQ.length];
+        state.gen.coverage = 42 + Math.sin(Date.now() / 1000) * 5;
+        state.gen.orbit++;
+        updateUI();
+    }, 500);
+}
+
+// 8. NEWADA
+function runNewada() {
+    if (state.p0.wake && state.p1.order && state.p2.direction && state.gen.orbit > 5) {
+        state.newada.state = "EMERGENT";
+        state.newada.orbit = "∞";
+    } else {
+        state.newada.state = "IDLE";
+        state.newada.orbit = "PASSIV";
+    }
+    log(`✨ NEWADA: ${state.newada.state} · Orbit ${state.newada.orbit}`);
+}
+
+// 9. INIT
+document.querySelectorAll('.cmd[data-id]').forEach(el => {
+    el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        if (id === "p0") { state.p0.wake = true; log("⚡ P0 aktiviert"); }
+        if (id === "p1") { state.p1.order = true; log("⚡ P1 aktiviert"); }
+        if (id === "p2") { state.p2.direction = "FORWARD"; log("⚡ P2 aktiviert"); }
+        updateUI();
+    });
+});
+
+updateUI();
+log("🌀 PIPELINE2 Master-Index initialisiert.");
+</script>
+
+</body>
+</html>
