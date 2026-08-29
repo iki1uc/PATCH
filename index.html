@@ -3,257 +3,548 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔺 243 + iki1uc · Narrativ-Maschine</title>
+<title>🌀 DER EINE MIND · ALLES IN ALLEM · NARRATIV</title>
 
 <style>
-:root {
-    --bg: #0a0a12;
-    --fg: #0ff;
-    --gold: #ffd700;
-    --243: #4f4;
-    --iki: #ff66ff;
-}
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: 'Consolas', monospace;
-    padding: 20px;
-    min-height: 100vh;
+  background: #0a0a12;
+  color: #d0d9e6;
+  font-family: 'Consolas', monospace;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background: radial-gradient(ellipse at 50% 0%, #0a0a20, #000000);
 }
-header {
-    border-bottom: 2px solid var(--gold);
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+.container {
+  max-width: 1400px;
+  width: 100%;
+  background: rgba(10,14,20,0.4);
+  border: 1px solid rgba(0,200,255,0.03);
+  border-radius: 24px;
+  padding: 24px;
+  backdrop-filter: blur(6px);
 }
-header h1 {
-    font-size: 20px;
-    color: var(--gold);
-}
-header h1 .two43 { color: var(--243); }
-header h1 .iki { color: var(--iki); }
 
-#dashboard {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+.header {
+  text-align: center;
+  border-bottom: 2px solid rgba(0,200,255,0.08);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
 }
-.card {
-    background: #0e0e1a;
-    border: 1px solid #1a1a2a;
-    border-radius: 10px;
-    padding: 16px;
-    min-height: 150px;
+.header h1 {
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  background: linear-gradient(90deg, #ffd700, #00ccff, #ff66ff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.card h3 {
-    font-size: 12px;
-    color: #666;
-    border-bottom: 1px solid #1a1a2a;
-    padding-bottom: 6px;
-    margin-bottom: 8px;
+.header .sub {
+  color: #3d5a70;
+  font-size: 10px;
+  letter-spacing: 4px;
 }
-.card .output {
-    font-size: 10px;
-    color: #6a6a8a;
-    line-height: 1.5;
-    white-space: pre-wrap;
-}
-.card .output .highlight { color: var(--gold); }
-.card .output .two43 { color: var(--243); }
-.card .output .iki { color: var(--iki); }
 
-button {
-    background: #111;
-    color: var(--fg);
-    border: 1px solid #333;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 10px;
-    transition: all 0.2s;
-    margin-top: 8px;
+.status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  font-size: 9px;
+  border: 1px solid rgba(0,200,255,0.02);
 }
-button:hover {
-    background: #1a1a2a;
-    border-color: var(--gold);
-}
-button.primary { border-color: var(--gold); color: var(--gold); }
-button.two43 { border-color: var(--243); color: var(--243); }
-button.iki { border-color: var(--iki); color: var(--iki); }
+.status-bar .item { display: flex; align-items: center; gap: 4px; }
+.status-bar .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.status-bar .dot.on { background: #00ff88; box-shadow: 0 0 8px #00ff8844; }
+.status-bar .dot.pulse { background: #ffd700; animation: dotPulse 1.5s infinite; }
+@keyframes dotPulse { 0%,100%{opacity:0.4;transform:scale(0.9)} 50%{opacity:1;transform:scale(1.2)} }
 
-#log {
-    grid-column: 1 / -1;
-    background: #0a0a12;
-    border: 1px solid #1a1a2a;
-    border-radius: 10px;
-    padding: 10px;
-    max-height: 150px;
-    overflow-y: auto;
-    font-size: 9px;
-    color: #6a6a8a;
-    line-height: 1.4;
+.canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: rgba(0,0,0,0.3);
+  border-radius: 16px;
+  border: 1px solid rgba(0,200,255,0.03);
+  overflow: hidden;
 }
-#log .entry { padding: 2px 0; border-bottom: 1px solid #0a0a12; }
-#log .time { color: #444; }
-#log .msg.two43 { color: var(--243); }
-#log .msg.iki { color: var(--iki); }
-#log .msg.ok { color: #4f4; }
+#mindCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
 
-@media (max-width: 800px) {
-    #dashboard { grid-template-columns: 1fr; }
+.mind-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin: 12px 0;
 }
+@media (max-width:700px){ .mind-grid { grid-template-columns: repeat(3,1fr); } }
+.mind-card {
+  background: rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,200,255,0.03);
+  border-radius: 10px;
+  padding: 8px 6px;
+  text-align: center;
+}
+.mind-card .label { font-size: 7px; color: #445555; text-transform: uppercase; letter-spacing: 1px; }
+.mind-card .value { font-size: 18px; font-weight: bold; }
+.mind-card .status { font-size: 8px; margin-top: 2px; }
+.mind-card .status.live { color: #00ff88; }
+.mind-card .status.float { color: #ffaa00; }
+
+.life-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 6px;
+  margin: 10px 0;
+}
+.life-card {
+  background: rgba(0,0,0,0.12);
+  border: 1px solid rgba(0,200,255,0.02);
+  border-radius: 8px;
+  padding: 4px 4px;
+  text-align: center;
+}
+.life-card .label { font-size: 5px; color: #445555; text-transform: uppercase; letter-spacing: 1px; }
+.life-card .value { font-size: 12px; font-weight: bold; }
+
+.narrativ-box {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,200,255,0.04);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 9px;
+  line-height: 1.8;
+  color: #8a9a9a;
+  min-height: 60px;
+  white-space: pre-wrap;
+}
+.narrativ-box .hl { color: #ffd700; }
+.narrativ-box .flow { color: #00ccff; }
+.narrativ-box .whirl { color: #ff66ff; }
+
+.controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
+}
+.controls button {
+  background: rgba(20,35,45,0.2);
+  color: #668888;
+  border: 1px solid rgba(0,200,255,0.04);
+  padding: 6px 16px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 9px;
+  transition: all 0.3s;
+}
+.controls button:hover {
+  background: rgba(40,80,100,0.08);
+  color: #aaeedd;
+}
+.controls button.primary { border-color: rgba(255,215,0,0.1); color: #ffd700; }
+.controls button.mind { border-color: rgba(0,200,255,0.1); color: #00ccff; }
+.controls button.narrativ { border-color: rgba(255,102,255,0.1); color: #ff66ff; }
+
+.log {
+  background: rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 8px;
+  color: #3d5a70;
+  max-height: 80px;
+  overflow-y: auto;
+  border: 1px solid rgba(0,200,255,0.02);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+.log .hl { color: #7fc9ff; }
+.log .ok { color: #00ff88; }
+.log .flow { color: #00ccff; }
+.log .whirl { color: #ff66ff; }
+.log .narrativ { color: #ffd700; }
+
+.footer {
+  text-align: center;
+  font-size: 7px;
+  color: #1f2a36;
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
+.footer span { color: #ffd700; }
 </style>
 </head>
 <body>
 
-<header>
-    <h1>
-        <span class="two43">243</span>
-        <span style="color:#666;"> + </span>
-        <span class="iki">iki1uc</span>
-        <span style="color:#666;"> → NARRATIV</span>
-    </h1>
-</header>
+<div class="container">
 
-<div id="dashboard">
-    <div class="card">
-        <h3>🔺 Dreiecke → Triolets (243)</h3>
-        <div class="output" id="output-243">⏳ Warte auf Verarbeitung...</div>
-        <button class="two43" id="btn-243">▶ 243 verarbeiten</button>
-    </div>
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🌀 DER EINE MIND · ALLES IN ALLEM</h1>
+    <div class="sub">MARKT · INDUSTRIE · BÖRSE · LEBEN · ARBEIT · FUN · DIRTY · NARRATIV</div>
+  </div>
 
-    <div class="card">
-        <h3>📊 Sortierung (iki1uc)</h3>
-        <div class="output" id="output-iki">⏳ Warte auf Sortierung...</div>
-        <button class="iki" id="btn-iki">▶ iki1uc sortieren</button>
-    </div>
+  <!-- STATUS -->
+  <div class="status-bar">
+    <span class="item"><span class="dot on"></span> MIND</span>
+    <span class="item"><span class="dot pulse"></span> NARRATIV</span>
+    <span class="item"><span class="dot on"></span> 756 ACHSEN</span>
+    <span class="item">🌀 <span id="synStatus">0.00</span></span>
+    <span class="item">💰 <span id="earnStatus">0.00</span></span>
+    <span class="item">📊 <span id="marktStatus">0.00</span></span>
+  </div>
 
-    <div class="card" style="grid-column:1/-1;">
-        <h3>📖 Vollständiges Narrativ</h3>
-        <div class="output" id="output-narrativ">⏳ Warte auf Narrativ...</div>
-        <button class="primary" id="btn-narrativ">▶ Narrativ erzeugen</button>
-    </div>
+  <!-- CANVAS -->
+  <div class="canvas-wrap">
+    <canvas id="mindCanvas"></canvas>
+  </div>
 
-    <div id="log">
-        <div class="entry"><span class="time">[INIT]</span> <span class="msg ok">🔺 243 + iki1uc Narrativ-Maschine geladen</span></div>
-    </div>
+  <!-- MIND-GRID -->
+  <div class="mind-grid" id="mindGrid">
+    <div class="mind-card"><div class="label">🌀 UR</div><div class="value" style="color:#ff4444;" id="mind-3">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="mind-card"><div class="label">🌀 KERN</div><div class="value" style="color:#ffaa00;" id="mind-9">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="mind-card"><div class="label">🌀 ORBIT</div><div class="value" style="color:#00ff88;" id="mind-27">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="mind-card"><div class="label">🌀 RAUM</div><div class="value" style="color:#00ccff;" id="mind-81">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="mind-card"><div class="label">🌀 KANAL</div><div class="value" style="color:#ff66ff;" id="mind-243">0.00</div><div class="status float">● schwebend</div></div>
+    <div class="mind-card"><div class="label">🌀 LEBEN</div><div class="value" style="color:#ffd700;" id="mind-756">0.00</div><div class="status float">● schwebend</div></div>
+  </div>
+
+  <!-- LIFE-PANEL -->
+  <div class="life-panel">
+    <div class="life-card"><div class="label">🌀 SYN</div><div class="value" id="lifeSyn" style="color:#00ccff;">0.00</div></div>
+    <div class="life-card"><div class="label">💰 EARN</div><div class="value" id="lifeEarn" style="color:#ffd700;">0.00</div></div>
+    <div class="life-card"><div class="label">📊 MARKT</div><div class="value" id="lifeMarkt" style="color:#ff66ff;">0.00</div></div>
+    <div class="life-card"><div class="label">🏭 INDUSTRIE</div><div class="value" id="lifeIndustrie" style="color:#00ff88;">0.00</div></div>
+    <div class="life-card"><div class="label">📈 BÖRSE</div><div class="value" id="lifeBoerse" style="color:#ffaa00;">0.00</div></div>
+    <div class="life-card"><div class="label">🌱 LEBEN</div><div class="value" id="lifeLeben" style="color:#00ff88;">0.00</div></div>
+    <div class="life-card"><div class="label">⚡ ARBEIT</div><div class="value" id="lifeArbeit" style="color:#ff4444;">0.00</div></div>
+    <div class="life-card"><div class="label">🎉 FUN</div><div class="value" id="lifeFun" style="color:#ff66ff;">0.00</div></div>
+    <div class="life-card"><div class="label">🔥 DIRTY</div><div class="value" id="lifeDirty" style="color:#ffaa00;">0.00</div></div>
+  </div>
+
+  <!-- NARRATIV -->
+  <div class="narrativ-box" id="narrativBox">
+    <span class="hl">🌀 Der eine Mind spricht...</span>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="primary" id="btnStart">▶ START</button>
+    <button class="mind" id="btnMind">🌀 MIND</button>
+    <button class="narrativ" id="btnNarrativ">📖 NARRATIV</button>
+    <button id="btnQuandt">🌀 QUANDT</button>
+    <button id="btnReset">⟲ RESET</button>
+  </div>
+
+  <!-- LOG -->
+  <div class="log" id="log">
+    <div>[🌀] DER EINE MIND · ALLES IN ALLEM · bereit</div>
+  </div>
+
+  <div class="footer">🌀 DER EINE MIND · ALLES IN ALLEM · NARRATIV · <span>wieimmer4u</span></div>
+
 </div>
 
-<script type="module">
-import { NarrativMaschine } from './core/243-iki1uc-verbindung.js';
+<script>
+// ============================================================
+// DER EINE MIND · ALLES IN ALLEM · NARRATIV
+// ============================================================
 
-// --- Kandidaten ---
-const kandidaten = [
-  'a', 'b', 'c', 'y', 'x', 'z', 'q', 'd', 'f',
-  'OS', 'BOOT', 'iki1uc', '243',
-  'DOOR', 'DOO', 'RESPO', 'NC.engine',
-  'SCORE', 'WETTE', 'SLIDE', 'AXIOM'
-];
+// ─── CANVAS ──────────────────────────────────────────────────
+const canvas = document.getElementById('mindCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, cx, cy;
 
-// --- Maschine ---
-const maschine = new NarrativMaschine();
-maschine.addKandidaten(kandidaten);
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width || 1000;
+  canvas.height = rect.height || (rect.width * 9/16) || 560;
+  W = canvas.width; H = canvas.height;
+  cx = W/2; cy = H/2;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-// --- Log ---
-function log(msg, type = 'ok') {
-    const logDiv = document.getElementById('log');
-    const entry = document.createElement('div');
-    entry.className = 'entry';
-    const time = new Date().toLocaleTimeString();
-    const cls = type === 'two43' ? 'two43' : type === 'iki' ? 'iki' : 'ok';
-    entry.innerHTML = `<span class="time">[${time}]</span> <span class="msg ${cls}">${msg}</span>`;
-    logDiv.appendChild(entry);
-    logDiv.scrollTop = logDiv.scrollHeight;
-    while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
+// ─── DOM ────────────────────────────────────────────────────
+const logDiv = document.getElementById('log');
+
+function log(msg, type = 'hl') {
+  const entry = document.createElement('div');
+  const time = new Date().toLocaleTimeString();
+  const cls = ['hl','ok','flow','whirl','narrativ'].includes(type) ? type : 'hl';
+  entry.innerHTML = `<div>[${time}] <span class="${cls}">${msg}</span></div>`;
+  logDiv.appendChild(entry);
+  logDiv.scrollTop = logDiv.scrollHeight;
+  while (logDiv.children.length > 50) logDiv.removeChild(logDiv.firstChild);
 }
 
-// --- Ausgabe ---
-function zeige243() {
-    const out = document.getElementById('output-243');
-    const narrative = maschine.engine243.zeigeNarrative();
-    if (narrative.length === 0) {
-        out.innerHTML = '⏳ Keine Triolets erzeugt.';
-        return;
-    }
-    let text = `📐 ${narrative.length} Triolets erzeugt\n\n`;
-    for (let i = 0; i < narrative.length; i++) {
-        const t = narrative[i];
-        if (t.status === 'triolet') {
-            text += `${i+1}. ${t.ecke1} ↔ ${t.ecke2} ↔ ${t.ecke3}\n`;
-            text += `   Gewicht: ${t.gewicht}\n`;
-        }
-    }
-    out.innerHTML = text;
+// ─── MIND ──────────────────────────────────────────────────
+const MIND = {
+  time: 0,
+  pulse: 0.5,
+  syn: 0.5,
+  freund: 0,
+  quandt: 1.0,
+  earn: 0,
+  markt: 0,
+  industrie: 0,
+  boerse: 0,
+  leben: 0,
+  arbeit: 0,
+  fun: 0,
+  dirty: 0,
+  axis: {
+    3: { value: 3, label: "UR", live: 0 },
+    9: { value: 9, label: "KERN", live: 0 },
+    27: { value: 27, label: "ORBIT", live: 0 },
+    81: { value: 81, label: "RAUM", live: 0 },
+    243: { value: 243, label: "KANAL", live: 0 },
+    756: { value: 756, label: "LEBEN", live: 0 }
+  },
+
+  pump() {
+    this.time += 0.02;
+    this.pulse = 0.3 + 0.7 * (0.5 + 0.5 * Math.sin(this.time * 0.9));
+    this.syn = 0.2 + 0.8 * (0.5 + 0.5 * Math.sin(this.time * 0.7));
+    this.freund = this.syn * Math.sin(this.time * 0.7 + Math.PI/2) * this.quandt;
+    this.earn += (this.syn * 0.01 + this.pulse * 0.005) * this.quandt;
+    this.markt = this.earn * 0.5 + this.syn * 0.3;
+    this.industrie = this.markt * 0.6 + this.pulse * 0.2;
+    this.boerse = this.industrie * 0.7 + this.freund * 0.1;
+    this.leben = this.syn * 0.4 + this.pulse * 0.3 + this.freund * 0.2;
+    this.arbeit = this.leben * 0.5 + this.earn * 0.3;
+    this.fun = this.leben * 0.3 + this.freund * 0.4 + this.pulse * 0.2;
+    this.dirty = this.arbeit * 0.3 + this.fun * 0.3 + this.boerse * 0.2;
+    this.updateAxis();
+    return this;
+  },
+
+  updateAxis() {
+    const keys = Object.keys(this.axis);
+    keys.forEach((key, idx) => {
+      const a = this.axis[key];
+      const base = this.syn * 0.3 + this.pulse * 0.2 + this.freund * 0.1 +
+                   this.quandt * 0.1 + this.markt * 0.05 + this.leben * 0.05;
+      const weight = (idx + 1) / 6;
+      a.live = Math.min(1, Math.max(0, base * (1 + weight * 0.5)));
+      if (key === "756") a.live = Math.min(1, a.live * 1.3 + 0.1);
+    });
+  },
+
+  status() {
+    return {
+      time: this.time,
+      pulse: this.pulse,
+      syn: this.syn,
+      freund: this.freund,
+      quandt: this.quandt,
+      earn: this.earn,
+      markt: this.markt,
+      industrie: this.industrie,
+      boerse: this.boerse,
+      leben: this.leben,
+      arbeit: this.arbeit,
+      fun: this.fun,
+      dirty: this.dirty,
+      axis: this.axis
+    };
+  },
+
+  narrativ() {
+    const s = this.status();
+    let text = "";
+    if (s.leben > 0.7) text += "🌱 Das Leben blüht. ";
+    else if (s.leben > 0.4) text += "🌿 Das Leben wächst. ";
+    else text += "🌫️ Das Leben ruht. ";
+    if (s.arbeit > 0.7) text += "⚡ Die Arbeit fließt. ";
+    else if (s.arbeit > 0.4) text += "🔄 Die Arbeit bewegt sich. ";
+    else text += "⏸️ Die Arbeit wartet. ";
+    if (s.markt > 0.7) text += "📈 Der Markt boomt. ";
+    else if (s.markt > 0.4) text += "📊 Der Markt pulsiert. ";
+    else text += "📉 Der Markt ruht. ";
+    if (s.fun > 0.7) text += "🎉 Der Fun ist grenzenlos. ";
+    else if (s.fun > 0.4) text += "😊 Der Fun ist spürbar. ";
+    else text += "🧘 Der Fun ist still. ";
+    if (s.dirty > 0.7) text += "🔥 Die Dirty-Seite ist wach. ";
+    else if (s.dirty > 0.4) text += "🌊 Die Dirty-Seite fließt. ";
+    else text += "💧 Die Dirty-Seite ruht. ";
+    text += `\n🌀 SYN: ${s.syn.toFixed(2)} · EARN: ${s.earn.toFixed(2)} · MARKT: ${s.markt.toFixed(2)}`;
+    text += `\n🧠 FREUND: ${s.freund.toFixed(2)} · LEBEN: ${s.leben.toFixed(2)} · ARBEIT: ${s.arbeit.toFixed(2)}`;
+    return text;
+  }
+};
+
+// ─── RENDER ──────────────────────────────────────────────────
+function render() {
+  ctx.clearRect(0, 0, W, H);
+  const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, W*0.6);
+  grad.addColorStop(0, `rgba(0,20,40,${0.3 + MIND.syn * 0.2})`);
+  grad.addColorStop(1, 'rgba(0,0,10,0.8)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  const colors = {3:'#ff4444',9:'#ffaa00',27:'#00ff88',81:'#00ccff',243:'#ff66ff',756:'#ffd700'};
+  const keys = Object.keys(MIND.axis);
+
+  keys.forEach((key, idx) => {
+    const a = MIND.axis[key];
+    const radius = W * 0.06 + (idx / keys.length) * W * 0.35;
+    ctx.strokeStyle = colors[key].replace(')', `,${0.02 + a.live * 0.12})`).replace('rgb', 'rgba');
+    ctx.lineWidth = 0.5 + a.live * 1.5;
+    ctx.setLineDash([2, 6 + (1 - a.live) * 6]);
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  keys.forEach((key, idx) => {
+    const a = MIND.axis[key];
+    const angle = (idx / keys.length) * Math.PI * 2 + MIND.time * 0.1;
+    const dist = W * 0.08 + a.live * W * 0.32;
+    const x = cx + Math.cos(angle) * dist * (0.5 + 0.5 * Math.sin(MIND.time * 0.1 + idx));
+    const y = cy + Math.sin(angle) * dist * (0.5 + 0.5 * Math.cos(MIND.time * 0.08 + idx));
+    const size = 3 + a.live * 10;
+    ctx.fillStyle = colors[key].replace(')', `,${0.1 + a.live * 0.5})`).replace('rgb', 'rgba');
+    ctx.shadowBlur = 15 + a.live * 15;
+    ctx.shadowColor = colors[key].replace(')', `,${a.live * 0.2})`).replace('rgb', 'rgba');
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#445555';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(key, x, y - size - 4);
+  });
+
+  const coreSize = 5 + MIND.syn * 12 + MIND.markt * 6;
+  ctx.shadowBlur = 25 + MIND.quandt * 15;
+  ctx.shadowColor = MIND.syn > 0.5 ? 'rgba(0,200,255,0.3)' : 'rgba(255,102,255,0.3)';
+  ctx.fillStyle = MIND.syn > 0.5 ? 'rgba(0,200,255,0.9)' : 'rgba(255,102,255,0.9)';
+  ctx.beginPath();
+  ctx.arc(cx, cy, coreSize, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = '#445555';
+  ctx.font = '8px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`SYN ${MIND.syn.toFixed(2)} · EARN ${MIND.earn.toFixed(2)} · MARKT ${MIND.markt.toFixed(2)}`, cx, H-8);
 }
 
-function zeigeIki() {
-    const out = document.getElementById('output-iki');
-    const sortierung = maschine.master.sortierung;
-    if (Object.keys(sortierung).length === 0) {
-        out.innerHTML = '⏳ Keine Sortierung vorhanden.';
-        return;
+// ─── UPDATE UI ──────────────────────────────────────────────
+function updateUI() {
+  const s = MIND.status();
+  document.getElementById('synStatus').textContent = s.syn.toFixed(3);
+  document.getElementById('earnStatus').textContent = s.earn.toFixed(2);
+  document.getElementById('marktStatus').textContent = s.markt.toFixed(2);
+
+  document.getElementById('lifeSyn').textContent = s.syn.toFixed(3);
+  document.getElementById('lifeEarn').textContent = s.earn.toFixed(2);
+  document.getElementById('lifeMarkt').textContent = s.markt.toFixed(2);
+  document.getElementById('lifeIndustrie').textContent = s.industrie.toFixed(2);
+  document.getElementById('lifeBoerse').textContent = s.boerse.toFixed(2);
+  document.getElementById('lifeLeben').textContent = s.leben.toFixed(2);
+  document.getElementById('lifeArbeit').textContent = s.arbeit.toFixed(2);
+  document.getElementById('lifeFun').textContent = s.fun.toFixed(2);
+  document.getElementById('lifeDirty').textContent = s.dirty.toFixed(2);
+
+  const keys = Object.keys(MIND.axis);
+  keys.forEach(key => {
+    const el = document.getElementById(`mind-${key}`);
+    if (el) {
+      el.textContent = MIND.axis[key].live.toFixed(3);
+      const statusEl = el.parentElement.querySelector('.status');
+      if (statusEl) {
+        statusEl.textContent = MIND.axis[key].live > 0.5 ? '● lebendig' : '○ schwebend';
+        statusEl.className = 'status ' + (MIND.axis[key].live > 0.5 ? 'live' : 'float');
+      }
     }
-    let text = `📊 Sortierung:\n`;
-    text += `  🔴 Schwer: ${sortierung.schwer?.length || 0}\n`;
-    text += `  🟡 Mittel: ${sortierung.mittel?.length || 0}\n`;
-    text += `  🟢 Leicht: ${sortierung.leicht?.length || 0}\n\n`;
-    
-    for (const [kategorie, items] of Object.entries(sortierung)) {
-        if (items && items.length > 0) {
-            text += `\n${kategorie}:\n`;
-            for (const item of items) {
-                text += `  - ${item.ecke1} ↔ ${item.ecke2} ↔ ${item.ecke3}\n`;
-            }
-        }
-    }
-    out.innerHTML = text;
+  });
+
+  document.getElementById('narrativBox').innerHTML = `<span class="hl">🌀 Der eine Mind spricht...</span>\n${MIND.narrativ()}`;
 }
 
-function zeigeNarrativ() {
-    const out = document.getElementById('output-narrativ');
-    const text = maschine.textNarrativ();
-    out.innerHTML = text;
-    log('📖 Narrativ erzeugt', 'ok');
+// ─── LOOP ──────────────────────────────────────────────────
+let running = true;
+
+function loop() {
+  if (!running) return;
+  MIND.pump();
+  updateUI();
+  render();
+  requestAnimationFrame(loop);
 }
 
-// --- Buttons ---
-document.getElementById('btn-243').addEventListener('click', () => {
-    const narrativ = maschine.verarbeiteAlle();
-    log(`🔺 243: ${narrativ.triolets.length} Triolets erzeugt`, 'two43');
-    zeige243();
+// ─── CONTROLS ──────────────────────────────────────────────
+document.getElementById('btnStart').addEventListener('click', function() {
+  running = !running;
+  this.textContent = running ? '▶ START' : '⏸ PAUSE';
+  log(running ? '▶ MIND gestartet' : '⏸ MIND pausiert', running ? 'ok' : 'warn');
+  if (running) loop();
 });
 
-document.getElementById('btn-iki').addEventListener('click', () => {
-    const n = maschine.zeigeNarrativ();
-    if (n.status === 'kein_narrativ') {
-        log('⚠️ Bitte zuerst 243 verarbeiten', 'ok');
-        return;
-    }
-    maschine.master.sortiereNarrative(n.triolets);
-    log('📊 iki1uc: Narrative sortiert', 'iki');
-    zeigeIki();
+document.getElementById('btnMind').addEventListener('click', function() {
+  log('🌀 MIND: Alles in allem', 'mind');
+  this.classList.toggle('active');
 });
 
-document.getElementById('btn-narrativ').addEventListener('click', () => {
-    const n = maschine.zeigeNarrativ();
-    if (n.status === 'kein_narrativ') {
-        log('⚠️ Bitte zuerst 243 verarbeiten', 'ok');
-        return;
-    }
-    zeigeNarrativ();
+document.getElementById('btnNarrativ').addEventListener('click', function() {
+  log('📖 NARRATIV: ' + MIND.narrativ().replace(/\n/g, ' · '), 'narrativ');
 });
 
-// --- Auto ---
-log('🔺 ' + kandidaten.length + ' Kandidaten geladen', 'ok');
-log('📐 ' + Math.floor(kandidaten.length / 3) + ' Dreiecke möglich', 'ok');
+document.getElementById('btnQuandt').addEventListener('click', function() {
+  MIND.quandt = Math.min(3.0, MIND.quandt + 0.2);
+  log(`🌀 QUANDT: ${MIND.quandt.toFixed(2)}`, 'hl');
+});
 
-// Auto-Narrativ nach 1 Sekunde
+document.getElementById('btnReset').addEventListener('click', function() {
+  Object.assign(MIND, {
+    time: 0, pulse: 0.5, syn: 0.5, freund: 0,
+    quandt: 1.0, earn: 0, markt: 0, industrie: 0,
+    boerse: 0, leben: 0, arbeit: 0, fun: 0, dirty: 0
+  });
+  Object.keys(MIND.axis).forEach(k => MIND.axis[k].live = 0);
+  document.querySelectorAll('.controls button.active').forEach(b => b.classList.remove('active'));
+  log('⟲ RESET · MIND zurückgesetzt', 'ok');
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); document.getElementById('btnStart').click(); }
+  if (e.key === 'm' || e.key === 'M') document.getElementById('btnMind').click();
+  if (e.key === 'n' || e.key === 'N') document.getElementById('btnNarrativ').click();
+  if (e.key === 'q' || e.key === 'Q') document.getElementById('btnQuandt').click();
+  if (e.key === 'x' || e.key === 'X') document.getElementById('btnReset').click();
+});
+
+log('⌨️  space=Start  m=MIND  n=NARRATIV  q=QUANDT  x=RESET', 'hl');
+log('🌀 DER EINE MIND · ALLES IN ALLEM · bereit', 'ok');
+
 setTimeout(() => {
-    document.getElementById('btn-243').click();
-    setTimeout(() => document.getElementById('btn-iki').click(), 500);
-    setTimeout(() => document.getElementById('btn-narrativ').click(), 1000);
+  running = true;
+  document.getElementById('btnStart').textContent = '⏸ PAUSE';
+  log('▶ MIND automatisch gestartet', 'ok');
+  loop();
 }, 500);
 </script>
+
 </body>
 </html>
