@@ -1,0 +1,8 @@
+<script type="module">
+  import { PIPE_START } from "./PIPE_START.js";
+
+  setInterval(async () => {
+    const result = await PIPE_START("ANKER");
+    console.log(result);
+  }, 200);
+</script>
