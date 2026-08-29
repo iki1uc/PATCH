@@ -1,0 +1,7 @@
+import { RoomDirectV } from "../api/Room.DirectV.js";
+
+const Ycore = new RoomDirectV("Y.room");
+
+export function Yrun(zone, respo, vec) {
+    return Ycore.run(zone, respo, vec);
+}
