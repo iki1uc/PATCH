@@ -1,1 +1,8 @@
+import { RolleEngine } from "./rolle.core.js";
+
+const engine = new RolleEngine();
+
+export function loop9(zone, respo, vec) {
+    return engine.run("9.loop", zone, respo, vec);
+}
 
