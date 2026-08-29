@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>PIPELINE3 · RAW → STRUCTURE → VECTOR · REAL</title>
+
+<style>
+body{background:#000;color:#0f0;font-family:Consolas, monospace;padding:20px;}
+h1{color:#6cf;}
+h2{color:#0f0;}
+pre{background:#111;padding:12px;border:1px solid #333;border-radius:6px;color:#0f0;}
+button{background:#111;color:#0f0;border:1px solid #0f0;padding:10px 20px;margin:5px;}
+section{margin-bottom:20px;}
+</style>
+
+<script type="module">
+
+import { QI } from "./QI.js";
+import { coreScan } from "./coreScan.js";
+
+import { P0 } from "./P0.js";
+import { P1 } from "./P1.js";
+import { P2 } from "./P2.js";
+
+window.out = msg => document.getElementById("out").innerText = msg;
+
+// QI
+window.qi_p3 = function(){
+    const core = coreScan();
+    out("QI · PIPELINE3\n" + JSON.stringify(QI.scan(P2.run(core)), null, 2));
+};
+
+window.qi_master = function(){
+    out("QI · MASTER\n" + JSON.stringify(QI.scan(coreScan()), null, 2));
+};
+
+window.qi_respo = function(){
+    const core = coreScan();
+    out("QI · RESPO\n" + JSON.stringify(QI.scan(core.respo360), null, 2));
+};
+
+// PIPELINE3
+window.p3_raw = function(){
+    out("P3 · RAW → WAKE\n" + JSON.stringify(P0.run(coreScan()), null, 2));
+};
+
+window.p3_structure = function(){
+    out("P3 · RAW → STRUCTURE\n" + JSON.stringify(P1.run(coreScan()), null, 2));
+};
+
+window.p3_vector = function(){
+    out("P3 · STRUCTURE → VECTOR\n" + JSON.stringify(P2.run(coreScan()), null, 2));
+};
+
+</script>
+
+</head>
+
+<body>
+
+<h1>PIPELINE3 · RAW → STRUCTURE → VECTOR</h1>
+
+<section>
+<h2>QI / IQQ</h2>
+<button onclick="qi_p3()">QI · PIPELINE3</button>
+<button onclick="qi_master()">QI · MASTER</button>
+<button onclick="qi_respo()">QI · RESPO</button>
+<pre id="out">Bereit…</pre>
+</section>
+
+<section>
+<h2>PIPELINE3 · Schalter</h2>
+<button onclick="p3_raw()">P3 · RAW → WAKE</button>
+<button onclick="p3_structure()">P3 · RAW → STRUCTURE</button>
+<button onclick="p3_vector()">P3 · STRUCTURE → VECTOR</button>
+</section>
+
+</body>
+</html>
