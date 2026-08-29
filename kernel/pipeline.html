@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>🌀 TYQ · LEBENSMATRIX · RITH MASTER 2.0</title>
+
+<style>
+  body { background:#0a0a0f; color:#0f0; font-family:Consolas; padding:20px; }
+  .log { font-size:12px; color:#7f7; padding:10px; background:#000; height:140px; overflow-y:auto; }
+  .panel { border:1px solid #333; padding:12px; margin-top:12px; border-radius:8px; }
+  .rith-display { font-size:60px; text-align:center; color:#ffd700; border:2px solid #ffd700; border-radius:50%; width:120px; height:120px; line-height:120px; margin:auto; }
+</style>
+</head>
+<body>
+
+<h2>🌀 TYQ · LEBENSMATRIX</h2>
+<div id="log" class="log">[init] LEBENSMATRIX gestartet…</div>
+
+<!-- RITH MASTER 2.0 UI -->
+<div class="panel">
+    <h2>🌀 RITH WERT</h2>
+    <div class="rith-display" id="rithWert">4</div>
+</div>
+
+<div class="panel">
+    <h2>🧠 HUMAN / ⚙️ MECHANIC</h2>
+    <div>Human: <b id="humanState">WACH</b></div>
+    <div>Mech: <b id="mechState">BEREIT</b></div>
+</div>
+
+<div class="panel">
+    <h2>🔮 REV / 🔄 UPD / 🚀 UPG</h2>
+    <div>REV Score: <b id="revScore">0</b></div>
+    <div>REV Emotion: <b id="revEmotion">NEUTRAL</b></div>
+    <div>UPD Changes: <b id="updChanges">0</b></div>
+    <div>UPD Level: <b id="updLevel">0</b></div>
+    <div>UPG Count: <b id="upgCount">0</b></div>
+    <div>UPG Level: <b id="upgLevel">0</b></div>
+
+    <button onclick="runRev()">🔮 REVIEW</button>
+    <button onclick="runUpd()">🔄 UPDATE</button>
+    <button onclick="runUpg()">🚀 UPGRADE</button>
+</div>
+
+<div class="panel">
+    <h2>🌀 PIPELINE</h2>
+    <button onclick="runP0()">🌅 P0</button>
+    <button onclick="runP1()">🔥 P1</button>
+    <button onclick="runP2()">🔗 P2</button>
+    <button onclick="runPipeline()">▶ FULL PIPELINE</button>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// LEBENS-KERN · TMP-Loader
+// ─────────────────────────────────────────────
+
+const CORE = {
+  modules: [
+    "OS_CORE.js",
+    "3.js",          // PIPELINE sort()
+    "TYQ.js",
+    "RITH.html",
+    "EVO.html",
+    "final.html",
+    "team.html",
+    "work.html"
+  ],
+
+  async init() {
+    log("🌀 LEBENSMATRIX: Module werden geladen…");
+
+    for (const m of this.modules) {
+      try {
+        await import(`./${m}?tmp=${Date.now()}`);
+        log(`🟢 Modul geladen: ${m}`);
+      } catch {
+        log(`🔴 Modul fehlt: ${m}`);
+      }
+    }
+
+    log("🌀 TMP aktiviert: Achsen 3,9,27,81,243,756");
+    log("🌀 TMP aktiviert: PUMP-Engine");
+    log("🌀 TMP aktiviert: sortComplex()");
+    log("🌀 TMP aktiviert: PIPELINE sort()");
+  }
+};
+
+CORE.init();
+
+// ─────────────────────────────────────────────
+// RITH MASTER 2.0 STATE
+// ─────────────────────────────────────────────
+
+const state = {
+    rith: 4,
+    human: "WACH",
+    mech: "BEREIT",
+    rev: { score: 0, emotion: "NEUTRAL" },
+    upd: { changes: 0, level: 0 },
+    upg: { count: 0, level: 0 },
+    p0:false,p1:false,p2:false
+};
+
+// LOG
+function log(msg) {
+    const el = document.getElementById("log");
+    el.innerHTML += msg + "<br>";
+    el.scrollTop = el.scrollHeight;
+}
+
+// UPDATE UI
+function updateUI() {
+    rithWert.textContent = state.rith;
+    humanState.textContent = state.human;
+    mechState.textContent = state.mech;
+    revScore.textContent = state.rev.score;
+    revEmotion.textContent = state.rev.emotion;
+    updChanges.textContent = state.upd.changes;
+    updLevel.textContent = state.upd.level;
+    upgCount.textContent = state.upg.count;
+    upgLevel.textContent = state.upg.level;
+}
+
+// ─────────────────────────────────────────────
+// REV / UPD / UPG mit sortComplex()
+// ─────────────────────────────────────────────
+
+function runRev() {
+    const r = sortComplex([3,9,27,81,243], { mode:"RITH", axis:"3,9,27,81,243" });
+    state.rev.score = r.sorted.numeric.length;
+    state.rev.emotion = r.sorted.percent[0];
+    state.human = state.rev.emotion;
+    log(`🔮 REV → ${state.rev.score} / ${state.rev.emotion}`);
+    updateUI();
+}
+
+function runUpd() {
+    const u = sortComplex([1,2,3,4,5], { mode:"TMP", pump:true });
+    state.upd.changes = u.sorted.numeric.length;
+    state.upd.level = Math.floor(state.upd.changes / 2);
+    state.mech = u.pump ? "AKTIV" : "PAUSE";
+    log(`🔄 UPD → ${state.upd.changes} / Level ${state.upd.level}`);
+    updateUI();
+}
+
+function runUpg() {
+    const g = sortComplex([1,4,16,64,256], { mode:"EVO", axis:"3,9,27,81,243" });
+    state.upg.count = g.sorted.evo.length;
+    state.upg.level = g.sorted.evo[g.sorted.evo.length-1].stage;
+    log(`🚀 UPG → ${state.upg.count} / Level ${state.upg.level}`);
+    updateUI();
+}
+
+// PIPELINE
+function runP0(){ state.p0=true; log("🌅 P0 RAW"); updateUI(); }
+function runP1(){ state.p1=true; log("🔥 P1 STRUCTURE"); updateUI(); }
+function runP2(){ state.p2=true; log("🔗 P2 VECTOR"); updateUI(); }
+
+function runPipeline(){
+    runP0();
+    setTimeout(runP1,200);
+    setTimeout(runP2,400);
+    setTimeout(runRev,600);
+    setTimeout(runUpd,800);
+    setTimeout(runUpg,1000);
+    log("🌀 FULL PIPELINE RUN");
+}
+
+updateUI();
+log("🌀 RITH MASTER 2.0 aktiv.");
+</script>
+
+</body>
+</html>
