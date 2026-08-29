@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- EVO-GEOLEGAL -->
+    <meta name="author" content="iki1uc (Ridvan)">
+    <meta name="license" content="MIT - Nutzung erlaubt. Logik-Reproduktion verboten.">
+
+    <title>🌀 PIPELINE9 · ALGORITHMISCHE MASTER-INDEX · 9 SCHALTER</title>
+
+    <style>
+        body {
+            background: #0a0a0f;
+            color: #0f0;
+            font-family: 'Consolas', monospace;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(0,0,0,0.2));
+        }
+        header h1 {
+            font-size: 22px;
+            background: linear-gradient(90deg, #ffd700, #b8a9ff, #6bcfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            margin: 0;
+        }
+        header p {
+            font-size: 10px;
+            color: #888;
+            margin: 5px 0 0 0;
+            letter-spacing: 2px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .schalter-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 20px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+        }
+
+        .schalter {
+            background: #0a0a0f;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 12px;
+            color: #aaa;
+            position: relative;
+        }
+        .schalter:hover {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+        .schalter.active {
+            border-color: #ff6b8a;
+            color: #ff6b8a;
+            box-shadow: 0 0 15px rgba(255,107,138,0.3);
+            background: rgba(255,107,138,0.05);
+        }
+        .schalter .num {
+            position: absolute;
+            top: 5px;
+            left: 8px;
+            font-size: 8px;
+            color: #555;
+        }
+        .schalter .sym {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .schalter .desc {
+            font-size: 9px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .panel {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .panel h2 {
+            font-size: 14px;
+            color: #ffd700;
+            margin: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            font-size: 10px;
+        }
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #222;
+        }
+        th {
+            background: #1a1a1a;
+            color: #ffd700;
+            letter-spacing: 1px;
+        }
+
+        .log {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            color: #888;
+            height: 120px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        button {
+            background: #1a1a2a;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        .summary {
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        footer {
+            text-align: center;
+            color: #333;
+            font-size: 9px;
+            padding-top: 8px;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌀 PIPELINE9 · MASTER-INDEX</h1>
+    <p>9 algorithmische Schalter · QI/IQQ · GEO · 8→9 · Tiefe · Ordnung</p>
+</header>
+
+<!-- 9 SCHALTER -->
+<div class="schalter-grid" id="schalterGrid">
+    <div class="schalter" data-id="qi">
+        <span class="num">01</span>
+        <span class="sym">◉</span>
+        QI
+        <span class="desc">Öffnung · 3→9</span>
+    </div>
+    <div class="schalter" data-id="iqq">
+        <span class="num">02</span>
+        <span class="sym">◎</span>
+        IQQ
+        <span class="desc">Schließung · 9→81</span>
+    </div>
+    <div class="schalter" data-id="geo">
+        <span class="num">03</span>
+        <span class="sym">◆</span>
+        GEO
+        <span class="desc">Ursache → Wirkung</span>
+    </div>
+    <div class="schalter" data-id="p9">
+        <span class="num">04</span>
+        <span class="sym">▣</span>
+        P9
+        <span class="desc">Prüfung · 8→9</span>
+    </div>
+    <div class="schalter" data-id="tmp">
+        <span class="num">05</span>
+        <span class="sym">△</span>
+        81.tmp
+        <span class="desc">Tiefenachse</span>
+    </div>
+    <div class="schalter" data-id="vector">
+        <span class="num">06</span>
+        <span class="sym">↺</span>
+        VECTOR
+        <span class="desc">GEO-MOVE-Vektor</span>
+    </div>
+    <div class="schalter" data-id="module">
+        <span class="num">07</span>
+        <span class="sym">☀️</span>
+        MODULE
+        <span class="desc">LIVE-Status</span>
+    </div>
+    <div class="schalter" data-id="rel">
+        <span class="num">08</span>
+        <span class="sym">⚙️</span>
+        REL
+        <span class="desc">Status · RDY/MISS</span>
+    </div>
+    <div class="schalter" data-id="start">
+        <span class="num">09</span>
+        <span class="sym">⚡</span>
+        START
+        <span class="desc">Vollständige Aktivierung</span>
+    </div>
+</div>
+
+<!-- AUSGABE / ALGORITHMUS -->
+<div class="grid-3">
+    <div class="panel">
+        <h2>ALGORITHMUS · AKTIV</h2>
+        <div id="algoOutput" style="font-size:11px; color:#9df; line-height:1.8;">
+            Warte auf Schalter-Aktivierung...
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>ANALYSE-TABELLE</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ebene</th>
+                    <th>Status</th>
+                    <th>Wert</th>
+                </tr>
+            </thead>
+            <tbody id="algoTable"></tbody>
+        </table>
+    </div>
+
+    <div class="panel">
+        <h2>LOG</h2>
+        <div class="log" id="log">[init] PIPELINE9 Master-Index bereit.</div>
+    </div>
+</div>
+
+<!-- ZUSAMMENFASSUNG -->
+<div class="panel">
+    <h2>KOHÄRENZ</h2>
+    <div class="summary" id="coherence">–</div>
+</div>
+
+<footer>⚖️ EVO-GEOLEGAL · iki1uc © · Code nutzbar, Logik unkopierbar.</footer>
+
+<script>
+// ============================================================
+// PIPELINE9 · Master-Index · 9 Schalter
+// ============================================================
+
+// 1. Schalter-Definitionen
+const SCHALTER = [
+    { id: "qi",      active: false, value: "QI aktiv" },
+    { id: "iqq",     active: false, value: "IQQ aktiv" },
+    { id: "geo",     active: false, value: "GEO aktiv" },
+    { id: "p9",      active: false, value: "P9 aktiv" },
+    { id: "tmp",     active: false, value: "81.tmp aktiv" },
+    { id: "vector",  active: false, value: "VECTOR aktiv" },
+    { id: "module",  active: false, value: "MODULE aktiv" },
+    { id: "rel",     active: false, value: "REL aktiv" },
+    { id: "start",   active: false, value: "START aktiv" }
+];
+
+// 2. GEN-Flow-Controller
+const GEN = {
+    step: "3",
+    coverage: 42,
+
+    nextStep(step) {
+        const seq = ["3", "QI", "9", "IQQ", "81", "PIPELINE9", "756", "27", "81.tmp", "3"];
+        const idx = seq.indexOf(step);
+        return seq[(idx + 1) % seq.length];
+    },
+
+    calcCoverage() {
+        return 42 + Math.sin(Date.now() / 1000) * 5;
+    },
+
+    update() {
+        this.step = this.nextStep(this.step);
+        this.coverage = this.calcCoverage();
+        document.getElementById("coherence").innerHTML = 
+            `🔄 Kohärenz: <b>${this.coverage.toFixed(1)}%</b> · Step: <b>${this.step}</b>`;
+    }
+};
+
+// 3. Log
+function log(msg) {
+    const el = document.getElementById("log");
+    const e = document.createElement("div");
+    e.textContent = msg;
+    el.appendChild(e);
+    el.scrollTop = el.scrollHeight;
+}
+
+// 4. Algorithmus-Reaktion
+function runAlgorithm() {
+    const activeCount = SCHALTER.filter(s => s.active).length;
+    const output = document.getElementById("algoOutput");
+    const table = document.getElementById("algoTable");
+
+    // Logik: Je mehr Schalter aktiv, desto tiefer der Algorithmus
+    if (activeCount === 0) {
+        output.innerHTML = "Status: <b>LEER</b><br>Keine Schalter aktiv.";
+    } else if (activeCount <= 3) {
+        output.innerHTML = "Status: <b>ALPHA</b><br>Grund-Potenzial erkannt.";
+    } else if (activeCount <= 6) {
+        output.innerHTML = "Status: <b>BETA</b><br>Struktur im Aufbau.";
+    } else if (activeCount <= 8) {
+        output.innerHTML = "Status: <b>GAMMA</b><br>Struktur fast vollständig.";
+    } else {
+        output.innerHTML = "Status: <b>∞ AKTIV</b><br>Vollständige 8→9 Bildung.";
+    }
+
+    // Tabelle
+    table.innerHTML = "";
+    SCHALTER.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${s.id.toUpperCase()}</td>
+                        <td style="color:${s.active ? '#6bffa9' : '#555'}">${s.active ? '✅ AKTIV' : '○ INAKTIV'}</td>
+                        <td>${s.value}</td>`;
+        table.appendChild(tr);
+    });
+
+    log(`🌀 Algorithmus: ${activeCount}/9 Schalter aktiv.`);
+}
+
+// 5. Schalter-Interaktion
+document.querySelectorAll('.schalter').forEach(el => {
+    el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        const schalter = SCHALTER.find(s => s.id === id);
+
+        // Toggle
+        schalter.active = !schalter.active;
+        el.classList.toggle('active', schalter.active);
+
+        // Log
+        log(`⚡ Schalter ${id.toUpperCase()} ${schalter.active ? 'AKTIVIERT' : 'DEAKTIVIERT'}`);
+
+        // Re-Run Algorithmus
+        runAlgorithm();
+    });
+});
+
+// 6. INIT + GEN-LOOP
+setInterval(() => GEN.update(), 500);
+runAlgorithm();
+log("🌀 9 Schalter bereit. Klicke, um den Algorithmus zu starten.");
+</script>
+
+</body>
+</html>
