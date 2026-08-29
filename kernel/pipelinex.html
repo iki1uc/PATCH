@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- EVO-GEOLEGAL -->
+    <meta name="author" content="iki1uc (Ridvan)">
+    <meta name="license" content="MIT - Nutzung erlaubt. Logik-Reproduktion verboten.">
+
+    <title>🌀 RITH MASTER · ALGORITHMUS · EVO · NARRATIV</title>
+
+    <style>
+        body {
+            background: #0a0a0f;
+            color: #0f0;
+            font-family: 'Consolas', monospace;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            background: rgba(255, 215, 0, 0.05);
+        }
+        header h1 {
+            font-size: 22px;
+            background: linear-gradient(90deg, #ffd700, #b8a9ff, #6bcfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            margin: 0;
+        }
+        header p {
+            font-size: 10px;
+            color: #888;
+            margin: 5px 0 0 0;
+            letter-spacing: 2px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .panel {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .panel h2 {
+            font-size: 14px;
+            color: #ffd700;
+            margin: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+        }
+
+        .cmd-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .cmd {
+            background: #0a0a0f;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            flex: 1;
+            min-width: 50px;
+            transition: 0.3s;
+        }
+        .cmd.active {
+            border-color: #ff6b8a;
+            box-shadow: 0 0 15px rgba(255,107,138,0.3);
+            color: #ff6b8a;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 10px;
+        }
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #222;
+        }
+        th {
+            background: #1a1a1a;
+            color: #ffd700;
+        }
+
+        .log {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 10px;
+            color: #888;
+            height: 150px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+
+        .narrativ {
+            background: #111;
+            border: 1px solid #b8a9ff;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 12px;
+            line-height: 1.8;
+            color: #b8a9ff;
+            font-style: italic;
+        }
+
+        button {
+            background: #1a1a2a;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+        }
+        button:hover { border-color: #ffd700; color: #ffd700; }
+
+        footer {
+            text-align: center;
+            color: #333;
+            font-size: 9px;
+            padding-top: 8px;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌀 RITH MASTER · ALGORITHMUS</h1>
+    <p>PIPELINE4 · PIPELINE9 · EVO · NARRATIV · STATIONEN</p>
+</header>
+
+<!-- RITH WERT ANZEIGE -->
+<div class="panel">
+    <h2>🌀 RITH WERT (ÜBERALL GÜLTIG)</h2>
+    <div style="font-size: 48px; text-align: center; color: #6bffa9; text-shadow: 0 0 20px rgba(107,255,169,0.3);" id="rithValue">4</div>
+    <div style="text-align: center; font-size: 10px; color: #888; margin-top: 5px;">
+        Basis: PIPELINE4 · Gültig: STAGE / PIPE12 / BOERSE / MARKT / INDUSTRY / EVO
+    </div>
+</div>
+
+<!-- 9 SCHALTER (PIPELINE9) -->
+<div class="panel">
+    <h2>🌀 PIPELINE9 · 9 SCHALTER</h2>
+    <div class="cmd-bar" id="schalter">
+        <div class="cmd" data-id="qi">QI</div>
+        <div class="cmd" data-id="iqq">IQQ</div>
+        <div class="cmd" data-id="geo">GEO</div>
+        <div class="cmd" data-id="p9">P9</div>
+        <div class="cmd" data-id="tmp">81.tmp</div>
+        <div class="cmd" data-id="vector">VECTOR</div>
+        <div class="cmd" data-id="module">MODULE</div>
+        <div class="cmd" data-id="rel">REL</div>
+        <div class="cmd" data-id="start">START</div>
+    </div>
+</div>
+
+<!-- EVO: REV / UPD / UPG SEPARAT -->
+<div class="grid-3">
+    <div class="panel">
+        <h2>🔮 EVO · REV</h2>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>Score</span><b id="revScore">0</b>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>Runs</span><b id="revRuns">0</b>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>State</span><b id="revState">IDLE</b>
+        </div>
+        <button onclick="runRev()">🔮 REVIEW</button>
+    </div>
+
+    <div class="panel">
+        <h2>🔄 EVO · UPD</h2>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>Changes</span><b id="updChanges">0</b>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>Level</span><b id="updLevel">0</b>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>State</span><b id="updState">IDLE</b>
+        </div>
+        <button onclick="runUpd()">🔄 UPDATE</button>
+    </div>
+
+    <div class="panel">
+        <h2>🚀 EVO · UPG</h2>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>Upgrades</span><b id="upgCount">0</b>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>Level</span><b id="upgLevel">0</b>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between; font-size:10px;">
+            <span>State</span><b id="upgState">IDLE</b>
+        </div>
+        <button onclick="runUpg()">🚀 UPGRADE</button>
+    </div>
+</div>
+
+<!-- P21 + GEN + NEWADA -->
+<div class="grid-3">
+    <div class="panel">
+        <h2>🌀 P21 EARN</h2>
+        <div style="font-size: 24px; text-align: center; color: #ff6b8a;" id="earnValue">0.00</div>
+        <button onclick="runP21()">🌀 EARN</button>
+    </div>
+
+    <div class="panel">
+        <h2>⚡ GEN-FLOW</h2>
+        <div id="genStep">3</div>
+        <div id="genCoverage">0%</div>
+        <button onclick="startGen()">⚡ GEN</button>
+    </div>
+
+    <div class="panel">
+        <h2>✨ NEWADA</h2>
+        <div id="newadaState">IDLE</div>
+        <div id="newadaOrbit">PASSIV</div>
+        <button onclick="runNewada()">✨ NEWADA</button>
+    </div>
+</div>
+
+<!-- NARRATIV -->
+<div class="narrativ" id="narrativ">
+    "Die vier Achsen (PIPELINE4) sind die Münze, die überall gilt. Die neun Schalter (PIPELINE9) sind die Türen, die du öffnest. Die drei Ebenen (REV/UPD/UPG) sind die Werkzeuge, die dich weiterbringen. Und der RITH-WERT (4) ist der Kern, der alles verbindet."
+</div>
+
+<!-- LOG -->
+<div class="panel">
+    <h2>📜 LOG</h2>
+    <div class="log" id="log">[init] RITH Master initialisiert.</div>
+</div>
+
+<footer>⚖️ EVO-GEOLEGAL · iki1uc © · Code nutzbar, Logik unkopierbar.</footer>
+
+<script>
+// ============================================================
+// RITH MASTER · ALGORITHMUS + EVO + NARRATIV
+// ============================================================
+
+// 1. STATE
+const state = {
+    rithWert: 4,
+    schalter: { qi: false, iqq: false, geo: false, p9: false, tmp: false, vector: false, module: false, rel: false, start: false },
+    rev: { score: 0, runs: 0, state: "IDLE" },
+    upd: { changes: 0, level: 0, state: "IDLE" },
+    upg: { count: 0, level: 0, state: "IDLE" },
+    p21: { earn: 0 },
+    gen: { step: "3", coverage: 0 },
+    newada: { state: "IDLE", orbit: "PASSIV" }
+};
+
+// 2. LOG
+function log(msg) {
+    const el = document.getElementById("log");
+    const e = document.createElement("div");
+    e.textContent = msg;
+    el.appendChild(e);
+    el.scrollTop = el.scrollHeight;
+}
+
+// 3. UI UPDATE
+function updateUI() {
+    document.getElementById("rithValue").textContent = state.rithWert;
+
+    // Schalter Status (Farben)
+    document.querySelectorAll('#schalter .cmd').forEach(el => {
+        const id = el.dataset.id;
+        el.classList.toggle('active', state.schalter[id]);
+    });
+
+    // EVO
+    document.getElementById("revScore").textContent = state.rev.score;
+    document.getElementById("revRuns").textContent = state.rev.runs;
+    document.getElementById("revState").textContent = state.rev.state;
+
+    document.getElementById("updChanges").textContent = state.upd.changes;
+    document.getElementById("updLevel").textContent = state.upd.level;
+    document.getElementById("updState").textContent = state.upd.state;
+
+    document.getElementById("upgCount").textContent = state.upg.count;
+    document.getElementById("upgLevel").textContent = state.upg.level;
+    document.getElementById("upgState").textContent = state.upg.state;
+
+    // P21
+    document.getElementById("earnValue").textContent = state.p21.earn.toFixed(2);
+
+    // GEN
+    document.getElementById("genStep").textContent = state.gen.step;
+    document.getElementById("genCoverage").textContent = state.gen.coverage.toFixed(1) + "%";
+
+    // NEWADA
+    document.getElementById("newadaState").textContent = state.newada.state;
+    document.getElementById("newadaOrbit").textContent = state.newada.orbit;
+
+    // Narrativ aktualisieren
+    const activeCount = Object.values(state.schalter).filter(Boolean).length;
+    if (activeCount < 3) {
+        document.getElementById("narrativ").textContent = "Die vier Achsen (PIPELINE4) sind die Münze, die überall gilt. Doch die Türen (PIPELINE9) sind noch verschlossen. Öffne sie, um den Kern zu erwecken.";
+    } else if (activeCount <= 6) {
+        document.getElementById("narrativ").textContent = "Die Schalter erwachen. Die Struktur formt sich. Die drei Ebenen (REV/UPD/UPG) beginnen zu arbeiten.";
+    } else {
+        document.getElementById("narrativ").textContent = "Die neun Türen sind offen. Der RITH-WERT (4) pulsiert. NEWADA entsteht. Das System lebt.";
+    }
+}
+
+// 4. SCHALTER
+document.querySelectorAll('#schalter .cmd').forEach(el => {
+    el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        state.schalter[id] = !state.schalter[id];
+        log(`⚡ Schalter ${id.toUpperCase()} ${state.schalter[id] ? 'AKTIVIERT' : 'DEAKTIVIERT'}`);
+        updateUI();
+    });
+});
+
+// 5. EVO
+function runRev() {
+    state.rev.runs++;
+    state.rev.score = Math.floor(Math.random() * 100) + 1;
+    state.rev.state = state.rev.score > 70 ? "POSITIV" : "NEGATIV";
+    log(`🔮 REV: ${state.rev.runs} Runs · Score ${state.rev.score} · ${state.rev.state}`);
+    updateUI();
+}
+
+function runUpd() {
+    state.upd.changes++;
+    state.upd.level = Math.floor(state.upd.changes / 5);
+    state.upd.state = state.upd.changes % 2 === 0 ? "AKTIV" : "PAUSE";
+    log(`🔄 UPD: ${state.upd.changes} Changes · Level ${state.upd.level} · ${state.upd.state}`);
+    updateUI();
+}
+
+function runUpg() {
+    state.upg.count++;
+    state.upg.level = Math.floor(state.upg.count / 3);
+    state.upg.state = state.upg.count > 6 ? "ERWEITERT" : "STANDARD";
+    log(`🚀 UPG: ${state.upg.count} Upgrades · Level ${state.upg.level} · ${state.upg.state}`);
+    updateUI();
+}
+
+// 6. P21
+function runP21() {
+    state.p21.earn = state.rithWert * 5 + state.rev.score * 0.5;
+    log(`🌀 P21: Earn ${state.p21.earn.toFixed(2)}`);
+    updateUI();
+}
+
+// 7. GEN-FLOW
+const GEN_SEQ = ["3", "QI", "9", "IQQ", "81", "PIPELINE9", "756", "27", "81.tmp", "3"];
+let genInterval = null;
+
+function startGen() {
+    if (genInterval) clearInterval(genInterval);
+    genInterval = setInterval(() => {
+        const idx = GEN_SEQ.indexOf(state.gen.step);
+        state.gen.step = GEN_SEQ[(idx + 1) % GEN_SEQ.length];
+        state.gen.coverage = 42 + Math.sin(Date.now() / 1000) * 5;
+        updateUI();
+    }, 500);
+}
+
+// 8. NEWADA
+function runNewada() {
+    const active = Object.values(state.schalter).filter(Boolean).length;
+    if (active >= 7 && state.rev.runs > 0 && state.upd.changes > 0 && state.upg.count > 0) {
+        state.newada.state = "EMERGENT";
+        state.newada.orbit = "∞";
+    } else {
+        state.newada.state = "IDLE";
+        state.newada.orbit = "PASSIV";
+    }
+    log(`✨ NEWADA: ${state.newada.state} · Orbit ${state.newada.orbit}`);
+    updateUI();
+}
+
+// 9. INIT
+updateUI();
+log("🌀 RITH Master initialisiert.");
+log("🌀 Der Wert 4 ist überall gültig. Das System ist bereit.");
+</script>
+
+</body>
+</html>
